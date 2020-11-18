@@ -14,7 +14,7 @@
     }
   },
   "require": {
-    "php": ">=7.1.0",
+    "php": ">=5.6.0",
     "topthink/think-queue": "~2.0",
     "aliyun/aliyun-mns-php-sdk": "^1.1"
   },
