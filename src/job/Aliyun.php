@@ -7,13 +7,15 @@
  * @copyright 2020 yzh52521 all rights reserved.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
+
 namespace think\queue\job;
 
 use AliyunMNS\Responses\ReceiveMessageResponse;
 use think\queue\connector\Aliyun as AliyunQueue;
 use think\queue\Job;
 
-class Aliyun extends Job{
+class Aliyun extends Job
+{
 
     /**
      * The Iron queue instance.
@@ -32,14 +34,15 @@ class Aliyun extends Job{
     /**
      * AliyunMNS constructor.
      *
-     * @param \think\queue\connector\Aliyun   $aliyunmns
-     * @param ReceiveMessageResponse           $job
-     * @param string                           $queue
+     * @param \think\queue\connector\Aliyun $aliyunmns
+     * @param ReceiveMessageResponse $job
+     * @param string $queue
      */
-    public function __construct(AliyunQueue $aliyunmns, $job, $queue){
+    public function __construct(AliyunQueue $aliyunmns, $job, $queue)
+    {
         $this->aliyunmns = $aliyunmns;
-        $this->job = $job;
-        $this->queue = $queue;
+        $this->job       = $job;
+        $this->queue     = $queue;
     }
 
     /**
@@ -48,7 +51,8 @@ class Aliyun extends Job{
      * @access public
      * @return void
      */
-    public function fire(){
+    public function fire()
+    {
         $this->resolveAndFire(json_decode($this->getRawBody(), true));
     }
 
@@ -58,7 +62,8 @@ class Aliyun extends Job{
      * @access public
      * @return int
      */
-    public function attempts(){
+    public function attempts()
+    {
         return (int)$this->job->getDequeueCount();
     }
 
@@ -66,7 +71,8 @@ class Aliyun extends Job{
      * @access public
      * 删除任务
      */
-    public function delete(){
+    public function delete()
+    {
         parent::delete();
 
         $this->aliyunmns->deleteMessage($this->queue, $this->job->getReceiptHandle());
@@ -78,8 +84,8 @@ class Aliyun extends Job{
      * @access public
      * @param int $delay
      */
-    public function release($delay = 0){
-
+    public function release($delay = 0)
+    {
         parent::release($delay);
 
         $this->delete();
@@ -93,7 +99,8 @@ class Aliyun extends Job{
      * @access public
      * @return string
      */
-    public function getRawBody(){
+    public function getRawBody()
+    {
         return $this->job->getMessageBody();
     }
 
